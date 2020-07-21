@@ -1,0 +1,85 @@
+﻿<Window x:Class="EnterInventory.EnterMaterial"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EnterInventory"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        mc:Ignorable="d"
+        Title="EnterMaterial" Height="550" Width="550" Loaded="Window_Loaded">
+    <Window.Resources>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="#20232A" />
+            <Setter Property="Foreground" Value="#FFC9E0DC" />
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="FontFamily" Value="./#Segoe UI" />
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border CornerRadius="4" Background="{TemplateBinding Background}">
+                            <Grid>
+                                <Path x:Name="PathIcon" Width="0" Height="0" Stretch="Fill" Fill="#4C87B3" HorizontalAlignment="Left" Margin="17,0,0,0" Data="F1 M 30.0833,22.1667L 50.6665,37.6043L 50.6665,38.7918L 30.0833,53.8333L 30.0833,22.1667 Z "/>
+                                <ContentPresenter x:Name="MyContentPresenter" Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" />
+                            </Grid>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#FF635B5B" />
+                                <Setter Property="Foreground" Value="White" />
+                                <Setter TargetName="PathIcon" Property="Fill" Value="Black" />
+                            </Trigger>
+                            <Trigger Property="IsFocused" Value="true">
+                                <Setter Property="Background" Value="#FF635B5B" />
+                                <Setter Property="Foreground" Value="White" />
+                                <Setter TargetName="PathIcon" Property="Fill" Value="Black" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#FF981E2A" />
+                                <Setter Property="Foreground" Value="White" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="AliceBlue" Offset="0"/>
+                <GradientStop Color="CornflowerBlue" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <Grid Height="24" VerticalAlignment="Top" Background="AliceBlue" MouseLeftButtonDown="Grid_MouseLeftButtonDown"  />
+        <Button x:Name="btnMainMenu" TabIndex="7" Content="Main Menu" FontSize="18" HorizontalAlignment="Left" Margin="338,411,0,0" VerticalAlignment="Top" Width="125" Height="55" Click="btnMainMenu_Click"/>
+        <Button x:Name="btnClose" TabIndex="8" Content="Close" FontSize="18" HorizontalAlignment="Left" Margin="338,471,0,0" VerticalAlignment="Top" Width="125" Height="55" Click="btnClose_Click"/>
+        <Image x:Name="image" HorizontalAlignment="Left" Height="80" Margin="190,10,0,0" VerticalAlignment="Top" Width="162" Stretch="Fill" Source="logo.png"/>
+        <Label x:Name="lblTitle" Content="Enter Information" HorizontalAlignment="Left" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="24" Margin="10,105,0,0" VerticalAlignment="Top" Width="524"/>
+        <Button x:Name="btnProcessBatch" TabIndex="6" Content="Process Batch" FontSize="18" HorizontalAlignment="Left" Margin="338,351,0,0" VerticalAlignment="Top" Width="125" Height="55" Click="btnProcessBatch_Click"/>
+        <Button x:Name="btnAdd" TabIndex="4" Content="Add" FontSize="18" HorizontalAlignment="Left" Margin="338,291,0,0" VerticalAlignment="Top" Width="125" Height="55" Click="btnAdd_Click"/>
+        <Button x:Name="btnChangeWarehouse" TabIndex="5" FontSize="18" HorizontalAlignment="Left" Margin="338,227,0,0" VerticalAlignment="Top" Width="125" Height="55" Click="btnChangeWarehouse_Click">
+            <TextBlock x:Name="tblChangeWarehouse" TextWrapping="Wrap" Text="Change Warehouse" TextAlignment="Center"/>
+        </Button>
+        <ComboBox x:Name="cboSelectEmployee" HorizontalAlignment="Left" Margin="155,260,0,0" VerticalAlignment="Top" Width="166" SelectionChanged="cboSelectEmployee_SelectionChanged"/>
+        <Label x:Name="lblAssignedWarehouse" Content="Enter Information" HorizontalAlignment="Left" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="24" Margin="10,152,0,0" VerticalAlignment="Top" Width="524"/>
+        <Label x:Name="lblEnterLastName" Content="Enter Last Name" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="23,227,0,0" VerticalAlignment="Top" Width="128"/>
+        <TextBox x:Name="txtEnterLastName" CharacterCasing="Upper" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Height="23" Margin="155,230,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="166" TextChanged="txtEnterLastName_TextChanged"/>
+        <TextBox x:Name="txtDate" CharacterCasing="Upper" IsReadOnly="True" Background="LightGray" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Height="23" Margin="155,317,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="166"/>
+        <TextBox x:Name="txtProjectID" CharacterCasing="Upper" TabIndex="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Height="23" Margin="155,348,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="166"/>
+        <TextBox x:Name="txtMSRPONumber" CharacterCasing="Upper" TabIndex="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Height="23" Margin="155,378,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="166"/>
+        <TextBox x:Name="txtPartNumber" CharacterCasing="Upper" TabIndex="2" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Height="23" Margin="155,407,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="166"/>
+        <TextBox x:Name="txtQuantity" CharacterCasing="Upper" TabIndex="3" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Height="23" Margin="155,438,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="166"/>
+        <TextBox x:Name="txtDateEntryComplete" CharacterCasing="Upper" TabIndex="8" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Height="23" Margin="155,470,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="166"/>
+        <Label x:Name="lblEntryComplete" Content="Data Entry Complete" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="23,469,0,0" VerticalAlignment="Top" Width="128"/>
+        <Label x:Name="lblQuantity" Content="Quantity" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="23,440,0,0" VerticalAlignment="Top" Width="128"/>
+        <Label x:Name="lblPartNumber" Content="Part Number" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="23,406,0,0" VerticalAlignment="Top" Width="128"/>
+        <Label x:Name="lblMSRPO" Content="MSR\PO Number" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="22,377,0,0" VerticalAlignment="Top" Width="128"/>
+        <Label x:Name="lblProjectID" Content="Project ID" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="23,348,0,0" VerticalAlignment="Top" Width="128"/>
+        <Label x:Name="lblDate" Content="Date" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="22,316,0,0" VerticalAlignment="Top" Width="128"/>
+        <Label x:Name="lblSelectEmployee" Content="Select Employee" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="22,258,0,0" VerticalAlignment="Top" Width="128"/>
+    </Grid>
+</Window>
