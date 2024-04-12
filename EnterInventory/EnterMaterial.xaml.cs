@@ -25,6 +25,7 @@ using KeyWordDLL;
 using NewEmployeeDLL;
 using ProjectsDLL;
 using InventoryDLL;
+using ProjectMatrixDLL;
 
 namespace EnterInventory
 {
@@ -44,6 +45,7 @@ namespace EnterInventory
         CurrentSession CurrentSession = new CurrentSession();
         ProcessBatchClass TheProcessBatchClass = new ProcessBatchClass();
         InventoryClass TheInventoryClass = new InventoryClass();
+        ProjectMatrixClass TheProjectMatrixClass = new ProjectMatrixClass();
 
         //setting up the data
         FindEmployeesForMaterialsDataSet TheFindEmployeesForMaterialsDataSet = new FindEmployeesForMaterialsDataSet();
@@ -51,11 +53,12 @@ namespace EnterInventory
         FindPartByJDEPartNumberDataSet TheFindPartByJDEPartNumber = new FindPartByJDEPartNumberDataSet();
         FindPartByPartIDDataSet TheFindPartByPartIDDataSet = new FindPartByPartIDDataSet();
         FindPartByPartNumberDataSet TheFindPartByPartNumberDataSet = new FindPartByPartNumberDataSet();
-        FindProjectByAssignedProjectIDDataSet TheFindProjectByAssignedProjectIDDataSet = new FindProjectByAssignedProjectIDDataSet();
         FindProjectByProjectNameDataSet TheFindProjectByProjectNameDataSet = new FindProjectByProjectNameDataSet();
         FindProjectByProjectIDDataSet TheFindProjectByProjectIDDataSet = new FindProjectByProjectIDDataSet();
         FindWarehouseInventoryPartDataSet TheFindWarehouseInventoryPartDataSet = new FindWarehouseInventoryPartDataSet();
         FindWIPByPartIDAndWarehouseIDDataSet TheFindByPartIDAndWarehouseIDDataSet = new FindWIPByPartIDAndWarehouseIDDataSet();
+        FindProjectMatrixByAssignedProjectIDDataSet TheFindProjectMatrixByAssignedProjectIDDataSet = new FindProjectMatrixByAssignedProjectIDDataSet();
+        FindProjectMatrixByCustomerProjectIDDataSet TheFindProjectMatrixByCustomerProjectIDDataSet = new FindProjectMatrixByCustomerProjectIDDataSet();
 
         //setting global variables
         int gintWarehouseID;
@@ -152,7 +155,6 @@ namespace EnterInventory
             bool blnFatalError = false;
             string strErrorMessage = "";
             int intRecordsFound;
-            bool blnProjectNotFound = false;
             bool blnPartNotFound = true;
             bool blnKeyWordNotFound;
             int intTotalQuantity;
@@ -193,57 +195,32 @@ namespace EnterInventory
                     else
                     {
 
-                        TheFindProjectByAssignedProjectIDDataSet = TheProjectClass.FindProjectByAssignedProjectID(strProject);
+                        TheFindProjectMatrixByCustomerProjectIDDataSet = TheProjectMatrixClass.FindProjectMatrixByCustomerProjectID(strProject);
 
-                        intRecordsFound = TheFindProjectByAssignedProjectIDDataSet.FindProjectByAssignedProjectID.Rows.Count;
+                        intRecordsFound = TheFindProjectMatrixByCustomerProjectIDDataSet.FindProjectMatrixByCustomerProjectID.Rows.Count;
 
-                        if (intRecordsFound == 0)
+                        if(intRecordsFound == 0)
                         {
-                            TheFindProjectByProjectNameDataSet = TheProjectClass.FindProjectByProjectName(strProject);
+                            TheFindProjectMatrixByAssignedProjectIDDataSet = TheProjectMatrixClass.FindProjectMatrixByAssignedProjectID(strProject);
 
-                            intRecordsFound = TheFindProjectByProjectNameDataSet.FindProjectByProjectName.Rows.Count;
+                            intRecordsFound = TheFindProjectMatrixByAssignedProjectIDDataSet.FindProjectMatrixByAssignedProjectID.Rows.Count;
 
-                            if (intRecordsFound == 0)
+                            if(intRecordsFound < 1)
                             {
-                                blnThereIsAProblem = TheDataValidationClass.VerifyIntegerData(strProject);
-
-                                if (blnThereIsAProblem == true)
-                                {
-                                    blnProjectNotFound = true;
-                                }
-                                else
-                                {
-                                    TheFindProjectByProjectIDDataSet = TheProjectClass.FindProjectByProjectID(Convert.ToInt32(strProject));
-
-                                    intRecordsFound = TheFindProjectByProjectIDDataSet.FindProjectByProjectID.Rows.Count;
-
-                                    if (intRecordsFound == 0)
-                                    {
-                                        blnProjectNotFound = true;
-                                    }
-                                    else
-                                    {
-                                        intProjectID = TheFindProjectByProjectIDDataSet.FindProjectByProjectID[0].ProjectID;
-                                        strProject = TheFindProjectByProjectIDDataSet.FindProjectByProjectID[0].AssignedProjectID;
-                                    }
-                                }
+                                TheMessagesClass.ErrorMessage("Project Not Found");
+                                return;
                             }
                             else
                             {
-                                strProject = TheFindProjectByProjectNameDataSet.FindProjectByProjectName[0].AssignedProjectID;
-                                intProjectID = TheFindProjectByProjectNameDataSet.FindProjectByProjectName[0].ProjectID;
+                                intProjectID = TheFindProjectMatrixByAssignedProjectIDDataSet.FindProjectMatrixByAssignedProjectID[0].ProjectID;
                             }
                         }
                         else
                         {
-                            intProjectID = TheFindProjectByAssignedProjectIDDataSet.FindProjectByAssignedProjectID[0].ProjectID;
+                            intProjectID = TheFindProjectMatrixByCustomerProjectIDDataSet.FindProjectMatrixByCustomerProjectID[0].ProjectID;
                         }
 
-                        if (blnProjectNotFound == true)
-                        {
-                            blnFatalError = true;
-                            strErrorMessage += "Project Was Not Found\n";
-                        }
+                        
                     }
                     if (MainWindow.gstrMenuSelection == "Receive")
                     {
@@ -354,6 +331,12 @@ namespace EnterInventory
                     else
                     {
                         intQuantity = Convert.ToInt32(strValueForValidation);
+
+                        if(intQuantity < 1)
+                        {
+                            blnFatalError = true;
+                            strErrorMessage += "Quantity Cannot be less than One\n";
+                        }
                     }
 
                     if (blnFatalError == true)
